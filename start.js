@@ -1,11 +1,11 @@
 /*jslint node: true */
 'use strict';
-const constants = require('byteballcore/constants.js');
-const conf = require('byteballcore/conf');
-const db = require('byteballcore/db');
-const eventBus = require('byteballcore/event_bus');
-const validationUtils = require('byteballcore/validation_utils');
-const headlessWallet = require('headless-byteball');
+const constants = require('ocore/constants.js');
+const conf = require('ocore/conf');
+const db = require('ocore/db');
+const eventBus = require('ocore/event_bus');
+const validationUtils = require('ocore/validation_utils');
+const headlessWallet = require('headless-obyte');
 const request = require('request');
 
 let arrQueue = [];
@@ -20,7 +20,7 @@ eventBus.once('headless_wallet_ready', () => {
 	 */
 	eventBus.on('paired', (from_address, pairing_secret) => {
 		// send a geeting message
-		const device = require('byteballcore/device.js');
+		const device = require('ocore/device.js');
 		device.sendMessageToDevice(from_address, 'text', "Welcome to my new shiny bot!");
 	});
 	
@@ -31,7 +31,7 @@ eventBus.once('headless_wallet_ready', () => {
 	
 	eventBus.on('text', (from_address, text) => {
 		text = text.trim();
-		const device = require('byteballcore/device.js');
+		const device = require('ocore/device.js');
 		const args = text.toLowerCase().split(':');
 		if (args.length === 2){
 			switch (args[0]) {
@@ -76,9 +76,9 @@ function checkQueue(){
 setInterval(checkQueue, 60000);
 
 function postDataFeed(city, time, temp){
-	const network = require('byteballcore/network.js');
-	const composer = require('byteballcore/composer.js');
-	const objectHash = require('byteballcore/object_hash.js');
+	const network = require('ocore/network.js');
+	const composer = require('ocore/composer.js');
+	const objectHash = require('ocore/object_hash.js');
 	
 	let data_feed = {};
 	data_feed[city + '_' + time] = temp;
@@ -112,7 +112,7 @@ eventBus.on('new_my_transactions', (arrUnits) => {
 	// handle new unconfirmed payments
 	// and notify user
 	
-//	const device = require('byteballcore/device.js');
+//	const device = require('ocore/device.js');
 //	device.sendMessageToDevice(device_address_determined_by_analyzing_the_payment, 'text', "Received your payment");
 });
 
@@ -123,7 +123,7 @@ eventBus.on('my_transactions_became_stable', (arrUnits) => {
 	// handle payments becoming confirmed
 	// and notify user
 	
-//	const device = require('byteballcore/device.js');
+//	const device = require('ocore/device.js');
 //	device.sendMessageToDevice(device_address_determined_by_analyzing_the_payment, 'text', "Your payment is confirmed");
 });
 
